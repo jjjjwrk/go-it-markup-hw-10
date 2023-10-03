@@ -9,6 +9,7 @@ const error = document.querySelector('.error');
 
 loader.classList.remove('is-hidden');
 error.classList.add('is-hidden');
+select.classList.add('is-hidden');
 
 fetchBreeds().then(function makeMarkup(data) {
     const markup = data.map(({ name, id }) => `<option value="${id}">${name}</option>`).join("");
@@ -18,7 +19,9 @@ fetchBreeds().then(function makeMarkup(data) {
     error.classList.remove("is-hidden");
     alert('Error');
 })
-.finally(() => loader.classList.add('is-hidden'));
+.finally(() => {loader.classList.add('is-hidden');
+select.classList.remove('is-hidden');
+});
 
 select.addEventListener('change', onChange);
 
@@ -39,9 +42,12 @@ function onChange(event) {
         <p class="temperament">TEMPERAMENT: ${catTemperament}</p></div>`);
     })
     .catch(function onError(data) {
-        errorLoad.classList.remove('is-hidden');
+        error.classList.remove('is-hidden');
         jsContainer.innerHTML = '';
         alert('Error');
     })
-    .finally(() => loader.classList.add('is-hidden'))
+    .finally(() => {
+        loader.classList.add('is-hidden');
+        error.classList.add('is-hidden');
+    })
 };
